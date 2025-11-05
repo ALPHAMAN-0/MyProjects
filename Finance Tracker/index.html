@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker - Manage Your Money</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-wallet"></i>
+                <h1>Finance Tracker</h1>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </button>
+                <button class="nav-btn" data-section="transactions">
+                    <i class="fas fa-list"></i> Transactions
+                </button>
+                <button class="nav-btn" data-section="analytics">
+                    <i class="fas fa-chart-pie"></i> Analytics
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="card balance-card">
+                        <div class="card-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Balance</h3>
+                            <p class="amount" id="totalBalance">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card income-card">
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Income</h3>
+                            <p class="amount" id="totalIncome">$0.00</p>
+                        </div>
+                    </div>
+                    <div class="card expense-card">
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Expenses</h3>
+                            <p class="amount" id="totalExpense">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Transaction Form -->
+                <div class="transaction-form-card">
+                    <h2>Add New Transaction</h2>
+                    <form id="transactionForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <input type="text" id="description" placeholder="e.g., Grocery shopping" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="amount">Amount</label>
+                                <input type="number" id="amount" placeholder="0.00" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="type">Type</label>
+                                <select id="type" required>
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select id="category" required>
+                                    <!-- Income Categories -->
+                                    <optgroup label="Income">
+                                        <option value="salary">Salary</option>
+                                        <option value="freelance">Freelance</option>
+                                        <option value="investment">Investment</option>
+                                        <option value="other-income">Other Income</option>
+                                    </optgroup>
+                                    <!-- Expense Categories -->
+                                    <optgroup label="Expenses">
+                                        <option value="food">Food & Dining</option>
+                                        <option value="transport">Transportation</option>
+                                        <option value="shopping">Shopping</option>
+                                        <option value="entertainment">Entertainment</option>
+                                        <option value="bills">Bills & Utilities</option>
+                                        <option value="health">Healthcare</option>
+                                        <option value="education">Education</option>
+                                        <option value="other-expense">Other Expense</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Transaction
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="recent-transactions">
+                    <div class="section-header">
+                        <h2>Recent Transactions</h2>
+                        <button class="btn btn-secondary" onclick="showSection('transactions')">View All</button>
+                    </div>
+                    <div id="recentTransactionsList" class="transactions-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No transactions yet. Add your first transaction above!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transactions Section -->
+            <section id="transactions" class="section">
+                <div class="section-header">
+                    <h2>All Transactions</h2>
+                    <div class="filters">
+                        <select id="filterType" class="filter-select">
+                            <option value="all">All Types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                        <select id="filterCategory" class="filter-select">
+                            <option value="all">All Categories</option>
+                            <option value="salary">Salary</option>
+                            <option value="freelance">Freelance</option>
+                            <option value="investment">Investment</option>
+                            <option value="food">Food & Dining</option>
+                            <option value="transport">Transportation</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="bills">Bills & Utilities</option>
+                            <option value="health">Healthcare</option>
+                            <option value="education">Education</option>
+                            <option value="other-income">Other Income</option>
+                            <option value="other-expense">Other Expense</option>
+                        </select>
+                        <button class="btn btn-danger" id="clearAllBtn">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                </div>
+                <div id="allTransactionsList" class="transactions-list">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No transactions found.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="section">
+                <h2>Financial Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <h3>Expense Breakdown by Category</h3>
+                        <canvas id="categoryChart"></canvas>
+                        <div id="categoryChartLegend" class="chart-legend"></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Income vs Expenses</h3>
+                        <canvas id="incomeExpenseChart"></canvas>
+                    </div>
+                    <div class="stats-card">
+                        <h3>Monthly Statistics</h3>
+                        <div class="stats-list">
+                            <div class="stat-item">
+                                <span class="stat-label">Average Transaction:</span>
+                                <span class="stat-value" id="avgTransaction">$0.00</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Transactions:</span>
+                                <span class="stat-value" id="totalTransactions">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Largest Expense:</span>
+                                <span class="stat-value" id="largestExpense">$0.00</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Largest Income:</span>
+                                <span class="stat-value" id="largestIncome">$0.00</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Savings Rate:</span>
+                                <span class="stat-value" id="savingsRate">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Finance Tracker. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Main JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>
