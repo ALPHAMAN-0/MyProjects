@@ -1,2 +1,2 @@
 # My Projects
-Only using HTML CSS and JAVAScript
+Only using HTML CSS and JAVAScript 
