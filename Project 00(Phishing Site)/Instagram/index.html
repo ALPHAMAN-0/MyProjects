@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="phone-mockup">
+            <div class="phone-frame">
+                <img src="https://www.instagram.com/static/images/homepage/screenshots/screenshot1.png/d6bf0c928b5a.png" alt="Instagram Screenshot" class="screenshot active" id="screenshot1">
+                <img src="https://www.instagram.com/static/images/homepage/screenshots/screenshot2.png/6f03eb85463c.png" alt="Instagram Screenshot" class="screenshot" id="screenshot2">
+                <img src="https://www.instagram.com/static/images/homepage/screenshots/screenshot3.png/f0c687aa6ec2.png" alt="Instagram Screenshot" class="screenshot" id="screenshot3">
+                <img src="https://www.instagram.com/static/images/homepage/screenshots/screenshot4.png/842fe5699220.png" alt="Instagram Screenshot" class="screenshot" id="screenshot4">
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="form-box">
+                <div class="header">
+                    <h1 class="logo">Instagram</h1>
+                </div>
+                
+                <form id="loginForm">
+                    <input 
+                        type="text" 
+                        id="username" 
+                        placeholder="Phone number, username, or email"
+                        autocapitalize="off"
+                        autocorrect="off"
+                        required
+                    >
+                    <input 
+                        type="password" 
+                        id="password" 
+                        placeholder="Password"
+                        required
+                    >
+                    <button type="submit" class="login-btn" id="loginBtn">Log in</button>
+                    
+                    <div class="error-message" id="errorMessage"></div>
+                </form>
+
+                <div class="divider">
+                    <div class="line"></div>
+                    <div class="or-text">OR</div>
+                    <div class="line"></div>
+                </div>
+
+                <a href="#" class="fb-login">
+                    <svg aria-label="Facebook" class="fb-icon" fill="#385185" height="16" viewBox="0 0 24 24" width="16">
+                        <path d="M20.656 3.094C18.969 1.406 16.75.563 14.344.563h-.688c-2.406 0-4.625.843-6.312 2.53C5.656 4.782 4.813 7 4.813 9.407v.687c0 2.407.843 4.625 2.53 6.313 1.688 1.687 3.907 2.53 6.313 2.53h.688c2.406 0 4.625-.843 6.312-2.53 1.688-1.688 2.531-3.906 2.531-6.313v-.687c0-2.407-.843-4.625-2.53-6.313zm-6.312 15.78h-.688c-4.125 0-7.5-3.375-7.5-7.5v-.687c0-4.126 3.375-7.5 7.5-7.5h.688c4.125 0 7.5 3.374 7.5 7.5v.687c0 4.125-3.375 7.5-7.5 7.5z"></path>
+                        <path d="M13.906 12.188V16.5h-1.875v-4.313H10.72V10.5h1.312V9.094c0-1.782.844-2.813 2.813-2.813h1.78v2.063h-1.124c-.844 0-1.125.28-1.125 1.124V10.5h2.156l-.281 1.688h-1.875z"></path>
+                    </svg>
+                    <span>Log in with Facebook</span>
+                </a>
+
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+
+            <div class="signup-box">
+                <p>Don't have an account? <a href="#" id="signupLink">Sign up</a></p>
+            </div>
+
+            <div class="app-download">
+                <p>Get the app.</p>
+                <div class="app-buttons">
+                    <a href="#" class="app-store">
+                        <img src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/180ae7a0bcf7.png" alt="Download on App Store">
+                    </a>
+                    <a href="#" class="google-play">
+                        <img src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc274.png" alt="Get it on Google Play">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            
+            <div class="modal-header">
+                <h1 class="logo">Instagram</h1>
+                <p class="signup-tagline">Sign up to see photos and videos from your friends.</p>
+            </div>
+
+            <a href="#" class="fb-signup-btn">
+                <svg aria-label="Facebook" class="fb-icon" fill="#fff" height="16" viewBox="0 0 24 24" width="16">
+                    <path d="M20.656 3.094C18.969 1.406 16.75.563 14.344.563h-.688c-2.406 0-4.625.843-6.312 2.53C5.656 4.782 4.813 7 4.813 9.407v.687c0 2.407.843 4.625 2.53 6.313 1.688 1.687 3.907 2.53 6.313 2.53h.688c2.406 0 4.625-.843 6.312-2.53 1.688-1.688 2.531-3.906 2.531-6.313v-.687c0-2.407-.843-4.625-2.53-6.313zm-6.312 15.78h-.688c-4.125 0-7.5-3.375-7.5-7.5v-.687c0-4.126 3.375-7.5 7.5-7.5h.688c4.125 0 7.5 3.374 7.5 7.5v.687c0 4.125-3.375 7.5-7.5 7.5z"></path>
+                    <path d="M13.906 12.188V16.5h-1.875v-4.313H10.72V10.5h1.312V9.094c0-1.782.844-2.813 2.813-2.813h1.78v2.063h-1.124c-.844 0-1.125.28-1.125 1.124V10.5h2.156l-.281 1.688h-1.875z"></path>
+                </svg>
+                Log in with Facebook
+            </a>
+
+            <div class="divider">
+                <div class="line"></div>
+                <div class="or-text">OR</div>
+                <div class="line"></div>
+            </div>
+
+            <form id="signupForm">
+                <input type="text" placeholder="Mobile Number or Email" required>
+                <input type="text" placeholder="Full Name" required>
+                <input type="text" placeholder="Username" autocapitalize="off" autocorrect="off" required>
+                <input type="password" placeholder="Password" required>
+                
+                <button type="submit" class="signup-btn">Sign up</button>
+            </form>
+
+            <p class="terms-text">
+                By signing up, you agree to our <a href="#">Terms</a>, <a href="#">Privacy Policy</a> and <a href="#">Cookies Policy</a>.
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">Meta</a>
+                <a href="#">About</a>
+                <a href="#">Blog</a>
+                <a href="#">Jobs</a>
+                <a href="#">Help</a>
+                <a href="#">API</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Locations</a>
+                <a href="#">Instagram Lite</a>
+                <a href="#">Threads</a>
+                <a href="#">Contact Uploading & Non-Users</a>
+                <a href="#">Meta Verified</a>
+            </div>
+            <div class="footer-bottom">
+                <select class="language-select">
+                    <option value="en">English</option>
+                    <option value="bn">বাংলা</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="pt">Português</option>
+                    <option value="zh">中文</option>
+                </select>
+                <span class="copyright">© 2025 Instagram from Meta</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,440 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #262626;
+}
+
+/* Main Container */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 20px;
+    flex: 1;
+    max-width: 935px;
+    margin: 0 auto;
+    width: 100%;
+    gap: 32px;
+}
+
+/* Phone Mockup */
+.phone-mockup {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.phone-frame {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="468" height="634" viewBox="0 0 468 634"><rect fill="%23262626" width="468" height="634" rx="40"/><rect fill="%23fff" x="25" y="84" width="418" height="466"/></svg>');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 468px;
+    height: 634px;
+    position: relative;
+}
+
+.screenshot {
+    position: absolute;
+    top: 108px;
+    right: 62px;
+    width: 250px;
+    height: 538px;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.screenshot.active {
+    opacity: 1;
+}
+
+/* Form Container */
+.form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    width: 100%;
+}
+
+.form-box {
+    background: white;
+    border: 1px solid #dbdbdb;
+    padding: 40px;
+    margin-bottom: 10px;
+}
+
+.header {
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.logo {
+    font-family: 'Billabong', 'Brush Script MT', cursive;
+    font-size: 51px;
+    font-weight: 400;
+    margin: 22px auto 12px;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 9px 8px 7px;
+    font-size: 12px;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    background-color: #fafafa;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #a8a8a8;
+}
+
+.login-btn,
+.signup-btn {
+    width: 100%;
+    background-color: #0095f6;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 8px;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+.login-btn:hover,
+.signup-btn:hover {
+    opacity: 0.9;
+}
+
+.login-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.error-message {
+    color: #ed4956;
+    font-size: 12px;
+    text-align: center;
+    margin: 10px 0;
+    min-height: 15px;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 18px 0;
+}
+
+.line {
+    flex: 1;
+    height: 1px;
+    background-color: #dbdbdb;
+}
+
+.or-text {
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #8e8e8e;
+}
+
+/* Facebook Login */
+.fb-login,
+.fb-signup-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #385185;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 8px 0;
+    padding: 10px;
+    transition: opacity 0.2s;
+}
+
+.fb-login:hover {
+    opacity: 0.7;
+}
+
+.fb-signup-btn {
+    background-color: #0095f6;
+    color: white;
+    border-radius: 8px;
+}
+
+.fb-signup-btn:hover {
+    opacity: 0.9;
+}
+
+.fb-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Forgot Password */
+.forgot-password {
+    text-align: center;
+    font-size: 12px;
+    color: #00376b;
+    text-decoration: none;
+    margin-top: 12px;
+    display: block;
+}
+
+.forgot-password:hover {
+    opacity: 0.7;
+}
+
+/* Signup Box */
+.signup-box {
+    background: white;
+    border: 1px solid #dbdbdb;
+    padding: 24px 40px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.signup-box a {
+    color: #0095f6;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.signup-box a:hover {
+    opacity: 0.7;
+}
+
+/* App Download */
+.app-download {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.app-download p {
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.app-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.app-buttons a {
+    display: block;
+}
+
+.app-buttons img {
+    height: 40px;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 32px;
+    border: none;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 350px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    font-size: 28px;
+    font-weight: 300;
+    color: #8e8e8e;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #262626;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.signup-tagline {
+    font-size: 17px;
+    font-weight: 600;
+    color: #8e8e8e;
+    margin: 16px 30px 22px;
+    line-height: 20px;
+}
+
+.terms-text {
+    font-size: 12px;
+    color: #8e8e8e;
+    text-align: center;
+    margin-top: 16px;
+    line-height: 16px;
+}
+
+.terms-text a {
+    color: #00376b;
+    text-decoration: none;
+}
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    background-color: #fafafa;
+    padding: 24px 0;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 935px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #8e8e8e;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.language-select {
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #8e8e8e;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.copyright {
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+/* Responsive Design */
+@media (max-width: 875px) {
+    .phone-mockup {
+        display: none;
+    }
+
+    .main-container {
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .form-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 450px) {
+    .form-box {
+        border: none;
+        padding: 20px;
+    }
+
+    .signup-box {
+        border: none;
+    }
+
+    .main-container {
+        padding: 0;
+    }
+
+    body {
+        background-color: white;
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #fafafa;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #dbdbdb;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c7c7c7;
+}
