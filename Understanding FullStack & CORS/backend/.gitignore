@@ -27,3 +27,23 @@ Thumbs.db
 # Build
 dist/
 build/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.eslintcache
+.npm/
+.yarn/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+
+# Package manager lock files (optional - uncomment if needed)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
