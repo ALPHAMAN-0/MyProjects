@@ -1,0 +1,22 @@
+# OS generated files
+.DS_Store
+._*
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# PHP specific
+*.log
+.php_cs.cache
+vendor/
+composer.lock
+
+# Sensitive data
+*.credentials
+*password*
+*.pem
+*.key
