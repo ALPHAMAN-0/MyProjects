@@ -20,3 +20,6 @@ composer.lock
 *password*
 *.pem
 *.key
+
+# exact filenames that slipped past the *password* pattern due to case
+**/userName&Password
